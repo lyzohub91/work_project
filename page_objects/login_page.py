@@ -1,13 +1,10 @@
 from selenium.webdriver.common.by import By
-from .web_driver import driver
-from base_p.base_page import BasePage
-from .locators import Locator
+from page_objects.base_page import BasePage
+from locators.locators import Locator
 
 
 class LoginPage(BasePage):
 
-    def __init__(self):
-        super().__init__(driver, Locator.url.value)
 
     def login(self, username, password):
         self.email_input = self.driver.find_element(By.XPATH, Locator.email_input.value)
@@ -19,3 +16,9 @@ class LoginPage(BasePage):
         self.password_input.clear()
         self.password_input.send_keys(password)
         self.login_btn.click()
+
+    def load(self, url=None):
+        self.log.info(f"Navigating to  {self.url}")
+        if not url:
+            url = self.url
+        self.driver.get(url)

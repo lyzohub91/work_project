@@ -1,8 +1,8 @@
 from page_objects.base_page import BasePage
 
 
-class IncidentPage(BasePage):
+class ChannelsPage(BasePage):
 
-    def create_incident(self):
+    def create_channel(self):
         pass
 
