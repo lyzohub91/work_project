@@ -18,14 +18,14 @@ def decorator_screenshot(func):
     return decorator.decorator(wrapper, func)
 
 
-@pytest.fixture(scope="class", autouse=False)
+@pytest.fixture(scope="class", autouse=True)
 def authorization_cyberproof():
     driver.maximize_window()
     page = LoginPage(driver, Locator.url.value)
     page.load(Locator.url.value)
     page.login(username, password)
     yield driver, page
-    driver.close()
+    driver.quit()
 
 
 @pytest.fixture(scope="class", autouse=False)

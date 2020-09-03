@@ -5,7 +5,44 @@ from page_objects.channels_page import ChannelsPage
 from locators.locators import Locator
 
 
+
 class TestChannels:
+
+    @pytest.mark.flaky(reruns=1, reruns_delay=0)
+    @pytest.mark.xfail
+    @pytest.mark.usefixtures('authorization_cyberproof')
+    @decorator_screenshot
+    def test_channel_empty_state_text(self, authorization_cyberproof):
+        """
+        This TC checks if empty state text is present on channels page:
+            * Navigate to Channels page: Channels page displayed;
+            * Check if empty state text is present on channels page :
+             "Select Channel to view details" text is present"
+        """
+        # Initialize driver and page from authorization_cyberproof fixture
+        driver, page = authorization_cyberproof
+
+        # Recreate page as Channels page
+        page = ChannelsPage(driver, Locator.channels_page_url.value)
+
+        # Navigating to the Channels page
+        page.load(Locator.channels_page_url.value)
+
+        # Waiting for Add channel button appears on the Channels page
+        page.wait_for_element(Locator.add_new_channel_btn.value)
+
+        # Checking if empty state text is present on channels page
+        assert page.element_is_present(Locator.channel_empty_state_placeholder.value), \
+            f" {Locator.channel_empty_state_placeholder.value} is not present"
+        page.log.info(f"{Locator.channel_empty_state_placeholder.value} is present")
+
+        # Initialization of actual and expected empty state text on channel page
+        expected_text = 'Select Channel to view'
+        actual_text = page.get_text_from_element(Locator.channel_empty_state_placeholder.value)
+
+        # Checking if empty state text is the same as expected, should be 'Select Channel to view'
+        assert actual_text == expected_text, f"{actual_text} is not as expected, should be {expected_text}"
+        page.log.info(f"Empty state message on channel page is as expected: {actual_text} = {expected_text}")
 
     @pytest.mark.usefixtures('authorization_cyberproof')
     @decorator_screenshot
@@ -63,7 +100,8 @@ class TestChannels:
         assert name == expected_value, f"Add new channel modal header {name} is not equal to {expected_value}"
         page.log.info(f"Add new channel modal header {name} is equal to  {expected_value}")
 
-
+    @pytest.mark.flaky(reruns=1, reruns_delay=0)
+    @pytest.mark.smoke
     @pytest.mark.usefixtures('authorization_cyberproof')
     @decorator_screenshot
     def test_create_channel(self, authorization_cyberproof):
@@ -138,3 +176,52 @@ class TestChannels:
         assert page.find_element_by_text(Locator.channels_list_n.value, expected_name),\
             f"Created channel with name{expected_name} is not present in channels list"
         page.log.info(f"Created channel with name{expected_name} is present in channels list")
+
+    @pytest.mark.xfail
+    @pytest.mark.usefixtures('authorization_cyberproof')
+    @decorator_screenshot
+    def test_channel_add_button_on_modal(self, authorization_cyberproof):
+        """
+        This TC checks if Add button on Add channel modal window is active by default:
+            * Navigate to Channels page: Channels page displayed;
+            * Click on Add channel button  and check if create Add channel modal window displayed:
+             Create New Channel modal window is displayed
+            * Check if Add button aon Add channel modal window is active :
+             Add button on Add channel window is active"
+        """
+        # Initialize driver and page from authorization_cyberproof fixture
+        driver, page = authorization_cyberproof
+
+        # Recreate page as Channels page
+        page = ChannelsPage(driver, Locator.channels_page_url.value)
+
+        # Navigating to the Channels page
+        page.load(Locator.channels_page_url.value)
+
+        # Waiting for Add channel button appears on the Channels page
+        page.wait_for_element(Locator.add_new_channel_btn.value)
+
+        # Checking if Add new channel button is present on channels page
+        assert page.element_is_present(Locator.add_new_channel_btn.value), \
+            f"Add channel button {Locator.add_new_channel_btn.value} is not present"
+        page.log.info(f"Add channel button {Locator.add_new_channel_btn.value} is present")
+
+        # Open New Channel modal window by clicking on Add new button
+        page.click(Locator.add_new_channel_btn.value)
+
+        # Wait for New channel modal window
+        page.wait_for_element(Locator.new_channel_modal_window.value)
+
+        # Checking if Add channel modal window is displayed
+        assert page.element_is_present(Locator.new_channel_modal_window.value), \
+            f"Add channel {Locator.new_channel_modal_window.value} modal window is not displayed"
+        page.log.info(f"Add channel {Locator.new_channel_modal_window.value} modal window is displayed")
+
+        # Checking if Add button is active by default
+        assert page.click(Locator.channel_save_btn.value), \
+            f"Add new channel button {Locator.channel_save_btn.value} is not active by default"
+        page.log.info(f"Add new channel button  {Locator.channel_save_btn.value} is active by default")
+
+
+
+

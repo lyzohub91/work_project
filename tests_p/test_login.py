@@ -4,10 +4,9 @@ from conftest import decorator_screenshot
 from locators.locators import Locator
 
 
-
 class TestLoginToApp:
 
-
+    @pytest.mark.xfail
     @pytest.mark.usefixtures('setup_cyberproof')
     @decorator_screenshot
     def test_unsuccessful_log_in_to_app(self, setup_cyberproof):
@@ -41,9 +40,9 @@ class TestLoginToApp:
             f"Error message text is not as expected: {expected_error_msg_txt} is not equal to {actual_error_msg_txt}"
         page.log.info(f"Error message text is as expected: {expected_error_msg_txt} is equal to {actual_error_msg_txt}")
 
-
     @pytest.mark.usefixtures('setup_cyberproof')
     @decorator_screenshot
+    @pytest.mark.smoke
     def test_successful_log_in_to_app(self, setup_cyberproof):
         """
         This TC checks successful login to app:

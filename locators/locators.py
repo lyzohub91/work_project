@@ -35,6 +35,11 @@ class Locator(Enum):
     create_incident_btn_modal = '//*[@id="cbp-modal-window"]//button[contains(text(), "Create incident")]'
     created_incident_name = '(//table//tr)[2]//td[3]/div'
     incident_list = '//table/tbody/tr'
+    incident_name_link = '//table/tbody/tr/td/div/span'
+    incident_preview_modal = '//*[@class="cbp-modal-layout cbp-modal-layout--aside"]'
+    incident_preview_modal_header = '//*[@class="cbp-modal-layout cbp-modal-layout--aside"]//h4'
+    create_incident_form_header = '//*[@id="cbp-modal-window"]//h4'
+
 
 
     #channels_page_locators
@@ -50,6 +55,7 @@ class Locator(Enum):
     channels_list_names = '//*[@class="channels-list"]'
     channels_list_n = '//*[@class="channel__name"]'
     channel_new_modal_header ='//*[@id="ng-app"]//h4'
+    channel_empty_state_placeholder = '//*[@class="content__view-placeholder fs-9 semi-bold ng-star-inserted"]'
 
 
 
