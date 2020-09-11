@@ -21,3 +21,4 @@ venv/
 
 logfile.txt
 /requirements.txt
+my_allure_results
