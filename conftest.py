@@ -1,7 +1,7 @@
+from configurations.web_driver import get_driver
 import decorator
 import allure
 import pytest
-from configurations.web_driver import driver
 from page_objects.login_page import LoginPage
 from configurations.credentials import username, password
 from locators.locators import Locator
@@ -18,8 +18,9 @@ def decorator_screenshot(func):
     return decorator.decorator(wrapper, func)
 
 
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="function", autouse=False)
 def authorization_cyberproof():
+    driver = get_driver()
     driver.maximize_window()
     page = LoginPage(driver, Locator.url.value)
     page.load(Locator.url.value)
@@ -28,8 +29,9 @@ def authorization_cyberproof():
     driver.quit()
 
 
-@pytest.fixture(scope="class", autouse=False)
+@pytest.fixture(scope="function", autouse=False)
 def setup_cyberproof():
+    driver = get_driver()
     driver.maximize_window()
     page = LoginPage(driver, Locator.url.value)
     page.load(Locator.url.value)
